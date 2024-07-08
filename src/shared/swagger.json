@@ -1,0 +1,765 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FlexiLease Autos API",
+    "version": "1.0.0",
+    "description": "API for managing cars, users, and reservations in the FlexiLease Autos application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api-docs",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Cars",
+      "description": "Car management"
+    },
+    {
+      "name": "Users",
+      "description": "User management"
+    },
+    {
+      "name": "Reserves",
+      "description": "Reserve management"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Car": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "example": "GM S10 2.8"
+          },
+          "color": {
+            "type": "string",
+            "example": "White"
+          },
+          "year": {
+            "type": "number",
+            "example": 2020
+          },
+          "value_per_day": {
+            "type": "number",
+            "example": 100
+          },
+          "accessories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "Air Conditioning"
+                }
+              }
+            }
+          },
+          "number_of_passengers": {
+            "type": "number",
+            "example": 5
+          }
+        },
+        "required": ["model", "color", "year", "value_per_day", "accessories", "number_of_passengers"]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Henrique"
+          },
+          "cpf": {
+            "type": "string",
+            "example": "100.000.000-00"
+          },
+          "birth": {
+            "type": "string",
+            "format": "date",
+            "example": "02/10/2000"
+          },
+          "email": {
+            "type": "string",
+            "example": "henrique1@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "cep": {
+            "type": "string",
+            "example": "01001000"
+          },
+          "qualified": {
+            "type": "string",
+            "example": "sim"
+          }
+        },
+        "required": ["name", "cpf", "birth", "email", "password", "cep", "qualified"]
+      },
+      "Reserve": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "example": "01/01/2021"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "example": "30/01/2021"
+          },
+          "id_car": {
+            "type": "string",
+            "example": "668ae8ea455ddc08388453e0"
+          },
+          "id_user": {
+            "type": "string",
+            "example": "668a238866297b9bbc27ad77"
+          },
+          "final_value": {
+            "type": "number",
+            "example": 1015
+          }
+        },
+        "required": ["start_date", "end_date", "id_car", "id_user"]
+      }
+    }
+  },
+  "paths": {
+    "/car": {
+      "get": {
+        "summary": "List all cars",
+        "tags": ["Cars"],
+        "responses": {
+          "200": {
+            "description": "List of cars",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "model": "GM S10 2.8",
+                        "color": "White",
+                        "year": 2020,
+                        "value_per_day": 100,
+                        "accessories": [
+                          {
+                            "description": "Air Conditioning"
+                          }
+                        ],
+                        "number_of_passengers": 5,
+                        "_id": "668ae8ea455ddc08388453e0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new car",
+        "tags": ["Cars"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              },
+              "example": {
+                "model": "GM S10 2.8",
+                "color": "White",
+                "year": 2020,
+                "value_per_day": 100,
+                "accessories": [
+                  {
+                    "description": "Air Conditioning"
+                  }
+                ],
+                "number_of_passengers": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Car created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car/{id}": {
+      "get": {
+        "summary": "Get a car by ID",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Car ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Car data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a car by ID",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Car ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              },
+              "example": {
+                "model": "GM S10 2.8",
+                "color": "White",
+                "year": 2020,
+                "value_per_day": 100,
+                "accessories": [
+                  {
+                    "description": "Air Conditioning"
+                  }
+                ],
+                "number_of_passengers": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Car updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a car by ID",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Car ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Car deleted successfully"
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        }
+      }
+    },
+    "/car/{id}/accessories/{accessoryId}": {
+      "patch": {
+        "summary": "Modify an accessory",
+        "tags": ["Cars"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Car ID"
+          },
+          {
+            "in": "path",
+            "name": "accessoryId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Accessory ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "description": "Heated Seats"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accessory modified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "List all users",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "name": "Henrique",
+                        "cpf": "100.000.000-00",
+                        "birth": "02/10/2000",
+                        "email": "henrique1@email.com",
+                        "password": "12345678",
+                        "cep": "01001000",
+                        "qualified": "sim",
+                        "_id": "668ae8ea455ddc08388453e0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "name": "Henrique",
+                "cpf": "100.000.000-00",
+                "birth": "02/10/2000",
+                "email": "henrique1@email.com",
+                "password": "12345678",
+                "cep": "01001000",
+                "qualified": "sim"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Get a user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "name": "Henrique",
+                "cpf": "100.000.000-00",
+                "birth": "02/10/2000",
+                "email": "henrique1@email.com",
+                "password": "12345678",
+                "cep": "01001000",
+                "qualified": "sim"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/authenticate": {
+      "post": {
+        "summary": "Authenticate a user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "email": "henrique1@email.com",
+                  "password": "12345678"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User authenticated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reserve": {
+      "get": {
+        "summary": "List all reserves",
+        "tags": ["Reserves"],
+        "responses": {
+          "200": {
+            "description": "List of reserves",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserve"
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "start_date": "01/01/2021",
+                        "end_date": "30/01/2021",
+                        "id_car": "668ae8ea455ddc08388453e0",
+                        "id_user": "668a238866297b9bbc27ad77",
+                        "final_value": 1015,
+                        "_id": "668aee9d455ddc083884543c"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new reserve",
+        "tags": ["Reserves"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reserve"
+              },
+              "example": {
+                "start_date": "01/01/2021",
+                "end_date": "30/01/2021",
+                "id_car": "668ae8ea455ddc08388453e0",
+                "id_user": "668a238866297b9bbc27ad77"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserve created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserve"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reserve/{id}": {
+      "get": {
+        "summary": "Get a reserve by ID",
+        "tags": ["Reserves"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Reserve ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserve data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserve"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reserve not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a reserve by ID",
+        "tags": ["Reserves"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Reserve ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reserve"
+              },
+              "example": {
+                "start_date": "01/01/2021",
+                "end_date": "30/01/2021",
+                "id_car": "668ae8ea455ddc08388453e0",
+                "id_user": "668a238866297b9bbc27ad77"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reserve updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserve"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reserve not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a reserve by ID",
+        "tags": ["Reserves"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Reserve ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Reserve deleted successfully"
+          },
+          "404": {
+            "description": "Reserve not found"
+          }
+        }
+      }
+    }
+  }
+}
