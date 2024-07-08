@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api-docs",
+      "url": "http://localhost:3000/api/v1",
       "description": "Local server"
     }
   ],
@@ -26,6 +26,13 @@
     }
   ],
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "Car": {
         "type": "object",
@@ -61,16 +68,27 @@
           "number_of_passengers": {
             "type": "number",
             "example": 5
+          },
+          "id": {
+            "type": "string",
+            "example": "668ae8ea455ddc08388453e0"
           }
         },
-        "required": ["model", "color", "year", "value_per_day", "accessories", "number_of_passengers"]
+        "required": [
+          "model",
+          "color",
+          "year",
+          "value_per_day",
+          "accessories",
+          "number_of_passengers"
+        ]
       },
       "User": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "example": "Henrique"
+            "example": "Usuario"
           },
           "cpf": {
             "type": "string",
@@ -83,7 +101,7 @@
           },
           "email": {
             "type": "string",
-            "example": "henrique1@email.com"
+            "example": "usuario@email.com"
           },
           "password": {
             "type": "string",
@@ -96,9 +114,21 @@
           "qualified": {
             "type": "string",
             "example": "sim"
+          },
+          "id": {
+            "type": "string",
+            "example": "668ae8ea455ddc08388453e0"
           }
         },
-        "required": ["name", "cpf", "birth", "email", "password", "cep", "qualified"]
+        "required": [
+          "name",
+          "cpf",
+          "birth",
+          "email",
+          "password",
+          "cep",
+          "qualified"
+        ]
       },
       "Reserve": {
         "type": "object",
@@ -124,17 +154,31 @@
           "final_value": {
             "type": "number",
             "example": 1015
+          },
+          "id": {
+            "type": "string",
+            "example": "668aee9d455ddc083884543c"
           }
         },
         "required": ["start_date", "end_date", "id_car", "id_user"]
       }
     }
   },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
     "/car": {
       "get": {
         "summary": "List all cars",
         "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of cars",
@@ -160,7 +204,7 @@
                           }
                         ],
                         "number_of_passengers": 5,
-                        "_id": "668ae8ea455ddc08388453e0"
+                        "id": "668ae8ea455ddc08388453e0"
                       }
                     ]
                   }
@@ -173,6 +217,11 @@
       "post": {
         "summary": "Create a new car",
         "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -180,17 +229,21 @@
               "schema": {
                 "$ref": "#/components/schemas/Car"
               },
-              "example": {
-                "model": "GM S10 2.8",
-                "color": "White",
-                "year": 2020,
-                "value_per_day": 100,
-                "accessories": [
-                  {
-                    "description": "Air Conditioning"
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "model": "GM S10 2.8",
+                    "color": "White",
+                    "year": 2020,
+                    "value_per_day": 100,
+                    "accessories": [
+                      {
+                        "description": "Air Conditioning"
+                      }
+                    ],
+                    "number_of_passengers": 5
                   }
-                ],
-                "number_of_passengers": 5
+                }
               }
             }
           }
@@ -213,6 +266,11 @@
       "get": {
         "summary": "Get a car by ID",
         "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -231,6 +289,23 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Car"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "model": "GM S10 2.8",
+                      "color": "White",
+                      "year": 2020,
+                      "value_per_day": 100,
+                      "accessories": [
+                        {
+                          "description": "Air Conditioning"
+                        }
+                      ],
+                      "number_of_passengers": 5,
+                      "id": "668ae8ea455ddc08388453e0"
+                    }
+                  }
                 }
               }
             }
@@ -243,6 +318,11 @@
       "put": {
         "summary": "Update a car by ID",
         "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -261,17 +341,21 @@
               "schema": {
                 "$ref": "#/components/schemas/Car"
               },
-              "example": {
-                "model": "GM S10 2.8",
-                "color": "White",
-                "year": 2020,
-                "value_per_day": 100,
-                "accessories": [
-                  {
-                    "description": "Air Conditioning"
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "model": "GM S10 2.8",
+                    "color": "Blue",
+                    "year": 2010,
+                    "value_per_day": 50,
+                    "accessories": [
+                      {
+                        "description": "Air Conditioning"
+                      }
+                    ],
+                    "number_of_passengers": 5
                   }
-                ],
-                "number_of_passengers": 5
+                }
               }
             }
           }
@@ -295,6 +379,11 @@
       "delete": {
         "summary": "Delete a car by ID",
         "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -320,6 +409,11 @@
       "patch": {
         "summary": "Modify an accessory",
         "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -376,6 +470,11 @@
       "get": {
         "summary": "List all users",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of users",
@@ -391,14 +490,14 @@
                   "example-1": {
                     "value": [
                       {
-                        "name": "Henrique",
+                        "name": "Usuario",
                         "cpf": "100.000.000-00",
                         "birth": "02/10/2000",
-                        "email": "henrique1@email.com",
+                        "email": "usuario@email.com",
                         "password": "12345678",
                         "cep": "01001000",
                         "qualified": "sim",
-                        "_id": "668ae8ea455ddc08388453e0"
+                        "id": "668ae8ea455ddc08388453e0"
                       }
                     ]
                   }
@@ -418,14 +517,18 @@
               "schema": {
                 "$ref": "#/components/schemas/User"
               },
-              "example": {
-                "name": "Henrique",
-                "cpf": "100.000.000-00",
-                "birth": "02/10/2000",
-                "email": "henrique1@email.com",
-                "password": "12345678",
-                "cep": "01001000",
-                "qualified": "sim"
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "name": "Usuario",
+                    "cpf": "100.000.000-00",
+                    "birth": "02/10/2000",
+                    "email": "usuario@email.com",
+                    "password": "12345678",
+                    "cep": "01001000",
+                    "qualified": "sim"
+                  }
+                }
               }
             }
           }
@@ -440,6 +543,38 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid input"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -448,6 +583,11 @@
       "get": {
         "summary": "Get a user by ID",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -466,6 +606,20 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "name": "Usuario",
+                      "cpf": "100.000.000-00",
+                      "birth": "02/10/2000",
+                      "email": "usuario@email.com",
+                      "password": "12345678",
+                      "cep": "01001000",
+                      "qualified": "sim",
+                      "id": "668ae8ea455ddc08388453e0"
+                    }
+                  }
                 }
               }
             }
@@ -478,6 +632,11 @@
       "put": {
         "summary": "Update a user by ID",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -496,14 +655,18 @@
               "schema": {
                 "$ref": "#/components/schemas/User"
               },
-              "example": {
-                "name": "Henrique",
-                "cpf": "100.000.000-00",
-                "birth": "02/10/2000",
-                "email": "henrique1@email.com",
-                "password": "12345678",
-                "cep": "01001000",
-                "qualified": "sim"
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "name": "Usuario",
+                    "cpf": "100.000.000-00",
+                    "birth": "02/10/2000",
+                    "email": "usuario@email.com",
+                    "password": "12345678",
+                    "cep": "01001000",
+                    "qualified": "sim"
+                  }
+                }
               }
             }
           }
@@ -527,6 +690,11 @@
       "delete": {
         "summary": "Delete a user by ID",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -567,7 +735,7 @@
                   }
                 },
                 "example": {
-                  "email": "henrique1@email.com",
+                  "email": "usuario@email.com",
                   "password": "12345678"
                 }
               }
@@ -589,6 +757,38 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid input"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incorrect email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Incorrect email/password combination"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -597,6 +797,11 @@
       "get": {
         "summary": "List all reserves",
         "tags": ["Reserves"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of reserves",
@@ -617,7 +822,7 @@
                         "id_car": "668ae8ea455ddc08388453e0",
                         "id_user": "668a238866297b9bbc27ad77",
                         "final_value": 1015,
-                        "_id": "668aee9d455ddc083884543c"
+                        "id": "668aee9d455ddc083884543c"
                       }
                     ]
                   }
@@ -630,6 +835,11 @@
       "post": {
         "summary": "Create a new reserve",
         "tags": ["Reserves"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -637,11 +847,15 @@
               "schema": {
                 "$ref": "#/components/schemas/Reserve"
               },
-              "example": {
-                "start_date": "01/01/2021",
-                "end_date": "30/01/2021",
-                "id_car": "668ae8ea455ddc08388453e0",
-                "id_user": "668a238866297b9bbc27ad77"
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "start_date": "01/01/2021",
+                    "end_date": "30/01/2021",
+                    "id_car": "668ae8ea455ddc08388453e0",
+                    "id_user": "668a238866297b9bbc27ad77"
+                  }
+                }
               }
             }
           }
@@ -664,6 +878,11 @@
       "get": {
         "summary": "Get a reserve by ID",
         "tags": ["Reserves"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -682,6 +901,18 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Reserve"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "start_date": "01/01/2021",
+                      "end_date": "30/01/2021",
+                      "id_car": "668ae8ea455ddc08388453e0",
+                      "id_user": "668a238866297b9bbc27ad77",
+                      "final_value": 1015,
+                      "id": "668aee9d455ddc083884543c"
+                    }
+                  }
                 }
               }
             }
@@ -694,6 +925,11 @@
       "put": {
         "summary": "Update a reserve by ID",
         "tags": ["Reserves"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -712,11 +948,15 @@
               "schema": {
                 "$ref": "#/components/schemas/Reserve"
               },
-              "example": {
-                "start_date": "01/01/2021",
-                "end_date": "30/01/2021",
-                "id_car": "668ae8ea455ddc08388453e0",
-                "id_user": "668a238866297b9bbc27ad77"
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "start_date": "01/01/2021",
+                    "end_date": "30/01/2021",
+                    "id_car": "668ae8ea455ddc08388453e0",
+                    "id_user": "668a238866297b9bbc27ad77"
+                  }
+                }
               }
             }
           }
@@ -740,6 +980,11 @@
       "delete": {
         "summary": "Delete a reserve by ID",
         "tags": ["Reserves"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
