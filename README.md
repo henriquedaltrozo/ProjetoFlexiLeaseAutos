@@ -1,26 +1,28 @@
 # Projeto Desafio Compacine API
 
-FlexiLeaseAutos é uma API REST para a gestão de reservas de carros. O projeto utiliza Node.js com TypeScript e o ODM Mongoose para gerenciamento do banco de dados MongoDB. A API permite cadastrar, listar, modificar e deletar carros, usuários e reservas.
+FlexiLeaseAutos é uma API REST para a gestão de reservas de carros. Carros, usuários e reservas podem ser cadastrados, listados, modificados e deletados.
 
-## Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - **Node.js**
 - **TypeScript**
 - **Mongoose**
 - **MongoDB**
-- **Swagger** para documentação
-- **Jest** para testes
+- **Swagger** 
+- **Jest**
+- **ESLint**
+- **Prettier**
 
-## Requisitos
+### Requisitos
 
 - Node.js (versão 20.11.1)
 - NPM (versão 6 ou superior)
 
-## Configuração do Ambiente
+## 📦 Configuração do Ambiente
 
 ### Arquivo `.env`
 
-Apague a parte `.example` do arquivo `.env.exemplo` na raiz do projeto e adicione as seguintes variáveis de ambiente:
+Apague `.example` do arquivo `.env.example` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
 ```
 MONGODB_URI=
@@ -51,52 +53,51 @@ JWT_SECRET=eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJb
    ```bash
    npm run dev
    ```
+   
+4. Para testes:
+   ```bash
+   npm run test
+   ```
 
 A API estará disponível em `http://localhost:3000/api/v1`.
 
-## Endpoints da API
+## 🎯 Endpoints da API
 
 ### Carros
 
-#### Operações
-
 | Método | URL         | Descrição                                                          |
 | ------ | ----------- | -------------------------------------------------------------------|
-| GET    | /car        | Listar carros: retorna a lista de carros                           |
-| GET    | /car/:id    | Buscar carros: retorna as informações de um carro específico       |
-| POST   | /car        | Cadastrar carro: cria um novo filme                                |
-| PUT    | /car/:id    | Atualizar carro: atualiza as informações de um filme existente     |
-| DELETE | /car/:id    | Excluir carro: deleta um filme existente                           |
+| GET    | /car        | Listar carros: Retorna a lista de carros                           |
+| GET    | /car/:id    | Buscar carros: Retorna as informações de um carro específico       |
+| POST   | /car        | Cadastrar carro: Cria um novo filme                                |
+| PUT    | /car/:id    | Atualizar carro: Atualiza as informações de um filme existente     |
+| DELETE | /car/:id    | Excluir carro: Deleta um filme existente                           |
 | PATCH  | /car/:id/accessories/:id | Modificar acessórios: Modifica acessórios de um carro |
 
 ### Usuários
 
-#### Operações
-
 | Método | URL                             | Descrição                                    |
 | ------ | ------------------------------- | ---------------------------------------------|
-| GET    | /user     | Listar usuários: retorna a lista de usuários                       |
-| GET    | /user/:id | Buscar usuário: retorna as informações de um usuário específico    |
+| GET    | /user     | Listar usuários: Retorna a lista de usuários                       |
+| GET    | /user/:id | Buscar usuário: Retorna as informações de um usuário específico    |
 | POST   | /user     | Cadastrar usuário: Cria um novo usuário                            |
 | PUT    | /user/:id | Atualizar usuário: Atualiza as informações de um usuário existente |
 | DELETE | /user/:id | Excluir usuário: Exclui um usuário existente                       |
-| POST   | /authenticate | Autentica um usuário: Gera um token para o usuário             |
+| POST   | /authenticate | Autenticar um usuário: Gera um token para o usuário            |
 
 ### Reservas
 
-#### Operações
-
 | Método | URL                             | Descrição                                        |
 | ------ | ------------------------------- | -------------------------------------------------|
-| GET    | /reserve     | Listar reservas: retorna a lista de reservas                        |
-| GET    | /reserve/:id | Buscar reserva: retorna as informações de uma reserva específica    |
+| GET    | /reserve     | Listar reservas: Retorna a lista de reservas                        |
+| GET    | /reserve/:id | Buscar reserva: Retorna as informações de uma reserva específica    |
 | POST   | /reserve     | Cadastrar reserva: Cria uma nova reserva                            |
 | PUT    | /reserve/:id | Atualizar reserva: Atualiza as informações de uma reserva existente |
 | DELETE | /reserve/:id | Excluir reserva: Exclui uma reserva existente                       |
 
-📖 Documentação da API
+##  📖 Documentação da API
 A documentação da API foi gerada utilizando Swagger e está disponível em http://localhost:3000/api-docs
 
-## Contato
+## 🔎 Contato
 
 Para mais informações, entre em contato com henrique.daltrozo.pb@compasso.com.br.
