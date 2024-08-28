@@ -10,8 +10,6 @@ FlexiLeaseAutos é uma API REST para a gestão de reservas de carros. Carros, us
 - **MongoDB**
 - **Swagger** 
 - **Jest**
-- **ESLint**
-- **Prettier**
 
 ### Requisitos
 
@@ -100,4 +98,4 @@ A documentação da API foi gerada utilizando Swagger e está disponível em htt
 
 ## 🔎 Contato
 
-Para mais informações, entre em contato com henrique.daltrozo.pb@compasso.com.br.
+Para mais informações, entre em contato com henriquedaltrozo3@gmail.com
