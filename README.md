@@ -37,7 +37,7 @@ JWT_SECRET=eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJb
 1. Clone o repositório:
 
    ```bash
-   git clone https: https://github.com/henriquedaltrozo/ProjetoFlexiLeaseAutos
+   git clone https: https://github.com/henriquedaltrozo/ProjetoFlexiLeaseAutos.git
    cd ProjetoFlexiLeaseAutos
    ```
 
