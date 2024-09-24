@@ -1,6 +1,6 @@
-# Projeto Desafio Compacine API
+# Projeto Flexi Lease Autos
 
-FlexiLeaseAutos é uma API REST para a gestão de reservas de carros. Carros, usuários e reservas podem ser cadastrados, listados, modificados e deletados.
+Flexi Lease Autos é uma API REST para a gestão de reservas de carros. Carros, usuários e reservas podem ser cadastrados, listados, modificados e deletados.
 
 ## 🛠️ Tecnologias Utilizadas
 
